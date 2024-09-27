@@ -125,6 +125,7 @@
     "autoprefixer": "10.4.5"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/lodash": "^4.14.195",
     "@types/react-bootstrap-table2-paginator": "^2.1.2",
     "@types/react-bootstrap-table2-toolkit": "^2.1.7",
