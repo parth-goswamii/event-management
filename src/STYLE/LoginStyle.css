@@ -1,0 +1,29 @@
+
+.logincss {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+
+.logocss{
+    height: 30px;
+    display: block,
+}
+  
+.card-custom {
+    max-width: 450px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .circular-progress-custom {
+    color: white;
+    margin-right: 8px;
+  }
+
+  .form-box {
+    padding: 16px; 
+    margin-top: 16px; 
+}

@@ -1,0 +1,34 @@
+
+.auth-logo img {
+    height: 30px;
+    display: block;
+  }
+  
+  .card-container {
+    max-width: 450px;
+    margin: auto;
+  }
+  
+  .auth-logo {
+    margin-top: 16px;
+  }
+  
+  .text-center .icon-animation {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .alert-box {
+    margin-top: 13px;
+  }
+  
+  .form-box {
+    padding: 16px;
+  }
+  
+  .mt-4 {
+    margin-top: 16px;
+  }
+  
+
+  

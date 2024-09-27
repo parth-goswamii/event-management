@@ -1,0 +1,9 @@
+const accessToken =
+  "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDMsImVtYWlsIjoicGFydGhnb3N3YW1pLnNoaXZpbmZvdGVjaEBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MjcwOTQxMzMsImV4cCI6MTcyNzE4MDUzM30.2lxb93MfU23aWsFIy04GeHsy7Q-VQNKJItnlz1jh3wo"
+
+  
+const nodeApiToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NDMsImVtYWlsIjoicGFydGhnb3N3YW1pLnNoaXZpbmZvdGVjaEBnbWFpbC5jb20iLCJyb2xlIjoiQWRtaW4iLCJpYXQiOjE3MjcwOTQxMzMsImV4cCI6MTcyNzE4MDUzM30.2lxb93MfU23aWsFIy04GeHsy7Q-VQNKJItnlz1jh3wo"
+
+
+export { accessToken, nodeApiToken }
+
