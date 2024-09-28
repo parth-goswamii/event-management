@@ -42,9 +42,15 @@ import {
   UPDATING,
   EMAIL_LABEL,
   PLACEHOLDER_EMAIL,
+  OTP_MUST_BE_A_NUMBER,
+  PLEASE_ENTER_VALID_EMAIL_ADDRESS,
+  EMAIL_IS_REQUIRED,
+  PASSWORD_IS_REQUIRED,
+  PASSWORD_CAPITAL_MESSAGE,
+  PASSWORD_8_CHAR,
 } from "../../common/constants/commonNames";
 
-import "../../STYLE/PasswordUpdatePage.css"
+import "../../STYLE/PasswordUpdatePage.css";
 
 const PasswordUpdatePage = () => {
   const dispatch = useDispatch();
@@ -59,14 +65,29 @@ const PasswordUpdatePage = () => {
       confirmPassword: "",
     },
     validationSchema: Yup.object({
-      otp: Yup.string().required(OTP_REQUIRED),
-      email: Yup.string().email(INVALID_EMAIL).required(EMAIL_REQUIRED),
+      otp: Yup.string()
+        .max(6)
+        .matches(/^\d+$/, OTP_MUST_BE_A_NUMBER)
+        .required(OTP_REQUIRED),
+      email: Yup.string()
+        .email(PLEASE_ENTER_VALID_EMAIL_ADDRESS)
+        .matches(/^[^\s@]+@[^\s@]+\.[^\s@]+$/, PLEASE_ENTER_VALID_EMAIL_ADDRESS)
+        .required(EMAIL_IS_REQUIRED),
       newPassword: Yup.string()
-        .min(6, PASSWORD_6_CHAR)
-        .required(NEW_PASSWORD_REQUIRED),
+        .required(PASSWORD_IS_REQUIRED)
+        .min(8, PASSWORD_8_CHAR)
+        .matches(
+          /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+          PASSWORD_CAPITAL_MESSAGE
+        ),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref("newPassword"), null], PASSWORDS_MUST_MATCH)
-        .required(CONFIRM_PASSWORD_REQUIRED),
+        .required(CONFIRM_PASSWORD_REQUIRED)
+        .min(8, PASSWORD_8_CHAR)
+        .matches(
+          /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+          PASSWORD_CAPITAL_MESSAGE
+        ),
     }),
 
     onSubmit: async (values) => {
@@ -84,7 +105,7 @@ const PasswordUpdatePage = () => {
 
         if (data.statusCode === StatusCodes.ACCEPTED) {
           toast.success(data.message);
-            navigate("/login");
+          navigate("/login");
         } else {
           toast.error(data.message);
         }
@@ -100,18 +121,13 @@ const PasswordUpdatePage = () => {
 
   return (
     <ParticlesAuth>
-      <ToastContainer />
       <div className="auth-page-content">
-        <Container className="mt-4">
+        <Container className="mt-1">
           <Grid container justifyContent="center">
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <Link to="/" className="d-inline-block auth-logo">
-                  <img
-                    src={logoLight}
-                    alt="Logo"
-                    className="auth-logo-img"
-                  />
+                  <img src={logoLight} alt="Logo" className="auth-logo-img" />
                 </Link>
               </Box>
             </Grid>
@@ -121,10 +137,18 @@ const PasswordUpdatePage = () => {
             <Grid item md={8} lg={6} xl={4}>
               <Card className="mt-3 mx-auto otp-card">
                 <CardContent className="p-3">
-                  <Typography variant="h6" className="text-center" color="primary">
+                  <Typography
+                    variant="h6"
+                    className="text-center"
+                    color="primary"
+                  >
                     {UPDATE_PASSWORD}
                   </Typography>
-                  <Typography variant="body2" className="text-center" color="textSecondary">
+                  <Typography
+                    variant="body2"
+                    className="text-center"
+                    color="textSecondary"
+                  >
                     {PLEASE_ENTER_YOUR_DETAILS_TO_UPDATE_PASS}
                   </Typography>
 
@@ -136,11 +160,27 @@ const PasswordUpdatePage = () => {
                       type="text"
                       placeholder={PLACEHOLDER_OTP}
                       value={validation.values.otp}
-                      onChange={validation.handleChange}
+                      onChange={(e) => {
+                        const inputValue = e.target.value;
+                        if (
+                          /^\d*$/.test(inputValue) &&
+                          inputValue.length <= 6
+                        ) {
+                          validation.setFieldValue("otp", inputValue);
+                        }
+                      }}
+                      inputProps={{
+                        maxLength: 6,
+                      }}
                       onBlur={validation.handleBlur}
-                      error={validation.touched.otp && Boolean(validation.errors.otp)}
-                      helperText={validation.touched.otp && validation.errors.otp}
+                      error={
+                        validation.touched.otp && Boolean(validation.errors.otp)
+                      }
+                      helperText={
+                        validation.touched.otp && validation.errors.otp
+                      }
                     />
+
                     <Box mt={3} />
                     <BaseTextField
                       label={EMAIL_LABEL}
@@ -150,8 +190,13 @@ const PasswordUpdatePage = () => {
                       value={validation.values.email}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
-                      error={validation.touched.email && Boolean(validation.errors.email)}
-                      helperText={validation.touched.email && validation.errors.email}
+                      error={
+                        validation.touched.email &&
+                        Boolean(validation.errors.email)
+                      }
+                      helperText={
+                        validation.touched.email && validation.errors.email
+                      }
                     />
                     <Box mt={3} />
                     <BaseTextField
@@ -162,8 +207,14 @@ const PasswordUpdatePage = () => {
                       value={validation.values.newPassword}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
-                      error={validation.touched.newPassword && Boolean(validation.errors.newPassword)}
-                      helperText={validation.touched.newPassword && validation.errors.newPassword}
+                      error={
+                        validation.touched.newPassword &&
+                        Boolean(validation.errors.newPassword)
+                      }
+                      helperText={
+                        validation.touched.newPassword &&
+                        validation.errors.newPassword
+                      }
                       showPasswordToggle
                     />
                     <Box mt={3} />
@@ -175,14 +226,20 @@ const PasswordUpdatePage = () => {
                       value={validation.values.confirmPassword}
                       onChange={validation.handleChange}
                       onBlur={validation.handleBlur}
-                      error={validation.touched.confirmPassword && Boolean(validation.errors.confirmPassword)}
-                      helperText={validation.touched.confirmPassword && validation.errors.confirmPassword}
+                      error={
+                        validation.touched.confirmPassword &&
+                        Boolean(validation.errors.confirmPassword)
+                      }
+                      helperText={
+                        validation.touched.confirmPassword &&
+                        validation.errors.confirmPassword
+                      }
                       showPasswordToggle
                     />
 
                     <Box mt={3}>
                       <BaseButton
-                        text={loading ? UPDATING : UPDATE_PASSWORD}
+                        text={loading ? "" : UPDATE_PASSWORD}
                         onClick={validation.handleSubmit}
                         loading={loading}
                         variant="contained"
