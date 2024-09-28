@@ -12,7 +12,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BASEURL, verifyEmailUrl } from "../../API/api_helper";
 import { StatusCodes } from "http-status-codes";
-import { EMAIL_SENT_SUCCESS, ERROR_MESSAGE, FAILED_TO_SENT_RESET_LINK, FORGOT_PASSWORD_TITLE, PLEASE_ENTER_YOUR_EMAIL, RESET_LINK_SENT, ENTER_YOUR_EMAIL_AND_INSTRUCTIONS_WILL_BE_SENT, PLACEHOLDER_EMAIL, SENDING, SEND_RESET_LINK, WAIT_I_REMEMBER_MY_PASS, CLICK_HERE, EMAIL_LABEL, FORGOT_PASSWORD, RESET_PASSWORD_WITH_SI } from "../../common/constants/commonNames";
+import { EMAIL_SENT_SUCCESS, ERROR_MESSAGE, FAILED_TO_SENT_RESET_LINK, FORGOT_PASSWORD_TITLE, PLEASE_ENTER_YOUR_EMAIL, RESET_LINK_SENT, ENTER_YOUR_EMAIL_AND_INSTRUCTIONS_WILL_BE_SENT, PLACEHOLDER_EMAIL, SENDING, SEND_RESET_LINK, WAIT_I_REMEMBER_MY_PASS, CLICK_HERE, EMAIL_LABEL, FORGOT_PASSWORD, RESET_PASSWORD_WITH_SI, PLEASE_ENTER_VALID_EMAIL_ADDRESS, EMAIL_IS_REQUIRED } from "../../common/constants/commonNames";
 import BaseButton from "../../common/components/BaseButton";
 import BaseTextField from "../../common/components/BaseTextField";
 import "../../STYLE/ForgotPWD.css";
@@ -57,7 +57,13 @@ const ForgetPasswordPage = (props) => {
       email: '',
     },
     validationSchema: Yup.object({
-      email: Yup.string().required(PLEASE_ENTER_YOUR_EMAIL),
+      email: Yup.string()
+      .email(PLEASE_ENTER_VALID_EMAIL_ADDRESS)
+      .matches(
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        PLEASE_ENTER_VALID_EMAIL_ADDRESS
+      )
+      .required(EMAIL_IS_REQUIRED)
     }),
     onSubmit: (values) => {
       dispatch(userForgetPassword(values));
@@ -73,9 +79,8 @@ const ForgetPasswordPage = (props) => {
 
   return (
     <ParticlesAuth>
-      <ToastContainer />
       <div className="auth-page-content">
-        <Container className="mt-4">
+        <Container className="mt-1">
           <Grid container justifyContent="center">
             <Grid item xs={12}>
               <Box className="auth-logo" display="flex" justifyContent="center" alignItems="center">
@@ -89,30 +94,13 @@ const ForgetPasswordPage = (props) => {
             <Grid item md={8} lg={6} xl={5} justifyContent="center">
               <Card className="card-container mt-4">
                 <CardContent>
-                  <div className="text-center mt-2">
+                  <div className="text-center mt-2 mb-3">
                     <Typography variant="h5" className="text-primary">{FORGOT_PASSWORD}</Typography>
-                    <Typography className="text-muted">{RESET_PASSWORD_WITH_SI}</Typography>
-                    <lord-icon
-                      src="https://cdn.lordicon.com/rhvddzym.json"
-                      trigger="loop"
-                      colors="primary:#0ab39c"
-                      className="icon-animation"
-                    />
                   </div>
-                  <Alert severity="warning" className="text-center mb-2 mx-2">
+                  <Alert severity="warning" className="text-center mx-2">
                     {ENTER_YOUR_EMAIL_AND_INSTRUCTIONS_WILL_BE_SENT}
                   </Alert>
-                  <div className="p-2">
-                    {forgetError && (
-                      <Alert severity="error" color="danger" className="alert-box">
-                        {forgetError}
-                      </Alert>
-                    )}
-                    {forgetSuccessMsg && (
-                      <Alert severity="success" color="success" className="alert-box">
-                        {forgetSuccessMsg}
-                      </Alert>
-                    )}
+                  <div>
                     <Box component="form" onSubmit={validation.handleSubmit} className="form-box">
                       <BaseTextField
                         label={EMAIL_LABEL}
@@ -128,7 +116,7 @@ const ForgetPasswordPage = (props) => {
 
                       <Box className="text-center mt-4">
                         <BaseButton
-                          text={loading ? SENDING : SEND_RESET_LINK}
+                          text={loading ? "": SEND_RESET_LINK}
                           onClick={validation.handleSubmit}
                           loading={loading}
                           variant="contained"

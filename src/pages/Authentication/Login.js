@@ -37,6 +37,11 @@ import {
   PLEASE_ENTER_YOUR_PASSWORD,
   LOADING,
   SIGNIN,
+  EMAIL_IS_REQUIRED,
+  PASSWORD_IS_REQUIRED,
+  PLEASE_ENTER_VALID_EMAIL_ADDRESS,
+  PASSWORD_8_CHAR,
+  PASSWORD_CAPITAL_MESSAGE,
 } from "../../common/constants/commonNames";
 import BaseButton from "../../common/components/BaseButton";
 import BaseTextField from "../../common/components/BaseTextField";
@@ -63,8 +68,21 @@ const Login = () => {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().required(PLEASE_ENTER_YOUR_EMAIL),
-      password: Yup.string().required(PLEASE_ENTER_YOUR_PASSWORD),
+      email: Yup.string()
+      .email(PLEASE_ENTER_VALID_EMAIL_ADDRESS)
+      .matches(
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        PLEASE_ENTER_VALID_EMAIL_ADDRESS
+      )
+      .required(EMAIL_IS_REQUIRED),
+
+      password: Yup.string()
+      .required(PASSWORD_IS_REQUIRED)
+      .min(8, PASSWORD_8_CHAR)
+      .matches(
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
+        PASSWORD_CAPITAL_MESSAGE
+      ),
     }),
     onSubmit: async (values) => {
       setLoading(true);
@@ -82,7 +100,7 @@ const Login = () => {
 
         if (response.statusCode === StatusCodes.OK) {
           setItem("authToken", response.data);
-          toast.success(SUCCESS_MESSAGE);
+          toast.success(response.message);
           dispatch(loginUser(response.data, navigate));
         } else {
           toast.error(response.message || ERROR_CHECK_CREDENTIALS);
@@ -97,9 +115,7 @@ const Login = () => {
 
   useEffect(() => {
     if (errorMsg) {
-      setTimeout(() => {
         dispatch(resetLoginFlag());
-      }, 3000);
     }
   }, [dispatch, errorMsg]);
 
@@ -109,7 +125,7 @@ const Login = () => {
     <React.Fragment>
       <ParticlesAuth>
         <Box className="auth-page-content">
-          <Container className="mt-4">
+          <Container className="mt-1">
             <Grid container justifyContent="center">
               <Grid item xs={12}>
                 <Box className="logincss">
@@ -132,9 +148,7 @@ const Login = () => {
                       <Typography variant="h5" className="text-primary">
                         {WELCOME_BACK}
                       </Typography>
-                      <Typography className="text-muted">
-                        {SIGN_IN_MESSAGE}
-                      </Typography>
+                      
                     </Box>
                     {error && <Alert severity="error">{error}</Alert>}
                     <Box
@@ -158,11 +172,12 @@ const Login = () => {
                           validation.touched.email && validation.errors.email
                         }
                       />
-                      <Box mb={3}>
-                        <Box display="flex" justifyContent="end">
-                          <Link to="/forgot-password" className="text-muted">
+                      <Box mt={3}>
+                        <Box display="flex" className="float-end">
+                          <Link to="/forgot-password" className="text-muted mt-0">
                             {FORGOT_PASSWORD}
                           </Link>
+                          
                         </Box>
                         <BaseTextField
                           label={PASSWORD_LABEL}
@@ -186,7 +201,7 @@ const Login = () => {
 
                       <Box mt={4}>
                         <BaseButton
-                          text={loading ? LOADING : SIGNIN}
+                          text={loading ? "" : SIGNIN}
                           onClick={validation.handleSubmit}
                           loading={loading}
                           variant="contained"
@@ -201,7 +216,6 @@ const Login = () => {
               </Grid>
             </Grid>
           </Container>
-          <ToastContainer />
         </Box>
       </ParticlesAuth>
     </React.Fragment>
