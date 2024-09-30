@@ -54,6 +54,10 @@
     PLEASE_ENTER_VALID_EMAIL_ADDRESS,
     EMAIL_IS_REQUIRED,
     VALIDATION_ERROR,
+    PHONE_NUMBER_IS_REQUIRED,
+    PHONE_NUMBER_MUST_BE_ONLY_DIGITS,
+    PHONE_NUMBER_10,
+    SAVE,
   } from "../../../../common/constants/commonNames";
   import BaseTextField from "../../../../common/components/BaseTextField";
   import BaseButton from "../../../../common/components/BaseButton";
@@ -80,7 +84,6 @@
     const [activeTab, setActiveTab] = useState(PROFILE_VALUE);
     const [isDirty, setIsDirty] = useState(false);
     const [searchParams] = useSearchParams();
-    const navigate = useNavigate();
 
     const tab = searchParams.get(TAB_VALUE);
 
@@ -114,9 +117,9 @@
           .required(EMAIL_IS_REQUIRED),
 
         phone_number: Yup.string()
-          .required("Phone number is required")
-          .matches(/^[0-9]+$/, "Phone number must be only digits")
-          .min(10, "Phone number must be at least 10 digits"),
+          .required(PHONE_NUMBER_IS_REQUIRED)
+          .matches(/^[0-9]+$/, PHONE_NUMBER_MUST_BE_ONLY_DIGITS)
+          .min(10, PHONE_NUMBER_10),
 
         currentPassword: Yup.string()
           .required(CURRENT_PASSWORD_IS_REQUIRED)
@@ -285,7 +288,7 @@
                   type="file"
                   accept="image/jpeg"
                   id="upload-photo"
-                  style={{ display: "none" }}
+                  className="hidden-input"
                   onChange={handleFileChange}
                 />
 
@@ -377,7 +380,7 @@
                 </Grid>
                 <Grid item xs={12}>
                   <BaseButton
-                    text={loading ? "" : "save"}
+                    text={loading ? "" : SAVE}
                     loading={loading}
                     disabled={!isDirty}
                     onClick={handleSave}

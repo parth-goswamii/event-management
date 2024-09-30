@@ -9,7 +9,12 @@ import {
 } from "reactstrap";
 import avatar1 from "../../assets/images/users/avatar-1.jpg";
 import { createSelector } from "reselect";
-import { getItem } from "../../common/constants/enums";
+import { getItem, getItemProfileData, removeItem, setItem } from "../../common/constants/enums";
+import { CHANGE_PASSWORD_TITLE, LOGOUT_TEXT, PROFILE_TEXT, USER, WELCOME_TEXT } from "../../common/constants/commonNames";
+import { BASEURL, viewProfileUrl } from "../../API/api_helper";
+import { StatusCodes } from "http-status-codes";
+import { toast } from "react-toastify";
+
 
 const ProfileDropdown = () => {
   const navigate = useNavigate();
@@ -19,24 +24,16 @@ const ProfileDropdown = () => {
   );
 
   const user = useSelector(profiledropdownData);
-  const [userName, setUserName] = useState("USER");
+  const [userName, setUserName] = useState(USER);
 
-  // useEffect(() => {
-  //   if (user && Object.keys(user).length > 0) {
-  //     setUserName(user.first_name || user.username || "Admin");
-  //   } else if (sessionStorage.getItem("authUser")) {
-  //     const obj = JSON.parse(sessionStorage.getItem("authUser"));
-  //     setUserName(obj.email || "Admin");
-  //   }
-  // }, [user]);
 
   useEffect(() => {
-    const profileData = localStorage.getItem('profileData');
+    const profileData = getItemProfileData();
     if (profileData) {
       const parsedProfile = JSON.parse(profileData);
-      setUserName(parsedProfile.name || "USER"); // Assuming `name` is the field in profileData
+      setUserName(parsedProfile.name || USER);
     } else {
-      setUserName("USER"); // Fallback if profile data isn't in local storage
+      setUserName(USER); 
     }
   }, []);
   
@@ -48,27 +45,26 @@ const ProfileDropdown = () => {
 
   const handleProfileClick = async () => {
     try {
-      const response = await fetch(
-        "https://refactor-event-management.onrender.com/api/viewProfile",
+      const response = await fetch(`${BASEURL}${viewProfileUrl}`,
         {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: getItem(), // Assuming you have a token stored
+            Authorization: getItem(), 
           },
         }
         
       );
       
-      if (response.ok) {
+      if (response.status === StatusCodes.OK) {
         const profileData = await response.json();
-        localStorage.setItem('profileData', JSON.stringify(profileData.data));
+        setItem('profileData', JSON.stringify(profileData.data))
         navigate("/pages-profile-settings?tab=profile");
       } else {
-        console.error("Failed to fetch profile data.");
+        toast.error(response.message);
       }
     } catch (error) {
-      console.error("Error fetching profile:", error);
+      toast.error(error.message)
     }
   };
 
@@ -76,10 +72,10 @@ const ProfileDropdown = () => {
     navigate("/pages-profile-settings?tab=password");
   };
   const handleLogout = () => {
-    // Clear user data from local storage
     localStorage.removeItem('profileData');
-    localStorage.removeItem('authToken'); // If you also want to clear session data
-    navigate("/logout"); // Redirect to logout or home page
+    removeItem('profileData')
+    removeItem('authToken')
+    navigate("/logout"); 
   };
   return (
     <React.Fragment>
@@ -103,21 +99,21 @@ const ProfileDropdown = () => {
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <h6 className="dropdown-header">Welcome {userName}!</h6>
+          <h6 className="dropdown-header">{WELCOME_TEXT} {userName}!</h6>
           <DropdownItem onClick={handleProfileClick}>
             <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-            <span className="align-middle">Profile</span>
+            <span className="align-middle">{PROFILE_TEXT}</span>
           </DropdownItem>
 
           <DropdownItem onClick={handleChangePasswordClick}>
             <i className="mdi mdi-lock-reset text-muted fs-16 align-middle me-1"></i>
-            <span className="align-middle">Change Password</span>
+            <span className="align-middle">{CHANGE_PASSWORD_TITLE}</span>
           </DropdownItem>
 
           <DropdownItem onClick={handleLogout}>
             <i className="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
             <span className="align-middle" data-key="t-logout">
-              Logout
+              {LOGOUT_TEXT}
             </span>
           </DropdownItem>
         </DropdownMenu>

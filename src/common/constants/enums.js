@@ -13,3 +13,7 @@ export const getItemProfileData = ()=>{
 
   return Profilekey
 }
+
+export const removeItem = (key) => {
+  localStorage.removeItem(key);
+};
