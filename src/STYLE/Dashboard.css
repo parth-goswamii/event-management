@@ -1,0 +1,47 @@
+.top-div{
+    padding: 20px;
+    padding-top: 80px;
+}
+
+.e0f7fa{
+   background-color: #e0f7fa !important;
+}
+
+.font-weight-bold{
+    font-weight: bold !important;
+}
+
+.c8e6c9{
+    background-color: #c8e6c9 !important;
+}
+
+.ffccbc{
+    background-color: #ffccbc !important;
+}
+.ffe0b2{
+    background-color: #ffe0b2 !important;
+}
+
+.table-card{
+    background-color: #f5f5f5 !important;
+    padding: 16px !important ;
+}
+
+.table-div{
+    max-height: 400px !important;
+    overflow-y: auto !important;
+    border: 1px solid #ccc !important;
+    border-radius: 4px !important;
+    padding: 10px !important;
+}
+
+.pie-card{
+    background-color: #f5f5f5 !important;
+     padding: 16px !important;
+}
+
+.pie-div{
+    position: relative !important;
+     height: 300px !important;
+     width: 100% !important
+}
