@@ -11,10 +11,45 @@ import { Card, CardContent, Typography, Grid } from "@mui/material";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { StatusCodes } from "http-status-codes";
-import { ACTIVE_USERS, ADDRESS_LINE_1, APPROVED_BOOKINGS, CANCELLED_BOOKINGS, CITY, CREATED_BY_EMAIL, DASH, DATE, DEACTIVATED_USERS, ERROR_FETCHING_DATA_FROM, EVENT_DATE, EVENT_DESCRIPTION, EVENT_NAME, HTTP_ERROR_STATUS, LATEST_BOOKINGS, LATEST_EVENTS, NO_LATEST_BOOKINGS_AVAILABLE, NO_LATEST_EVENTS_AVAILABLE, PENDING_BOOKING, STATUS, TOTAL_BOOKING, TOTAL_EVENTS, TOTAL_USERS, USER_COUNT_BY_YEAR, YEARLY } from "../../common/constants/commonNames";
-import { BASEURL, countOfBookingStatusUrl, countOfTotalEventUrl, countOfTotalUserUrl, graphOfUserUrl, listOfLatestBookingUrl, listOfLatestEventUrl } from "../../API/api_helper";
+import {
+  ACTIVE_USERS,
+  ADDRESS_LINE_1,
+  APPROVED_BOOKINGS,
+  CANCELLED_BOOKINGS,
+  CITY,
+  CREATED_BY_EMAIL,
+  DASH,
+  DATE,
+  DEACTIVATED_USERS,
+  ERROR_FETCHING_DATA_FROM,
+  EVENT_DATE,
+  EVENT_DESCRIPTION,
+  EVENT_NAME,
+  HTTP_ERROR_STATUS,
+  LATEST_BOOKINGS,
+  LATEST_EVENTS,
+  NO_LATEST_BOOKINGS_AVAILABLE,
+  NO_LATEST_EVENTS_AVAILABLE,
+  PENDING_BOOKING,
+  STATUS,
+  TOTAL_BOOKING,
+  TOTAL_EVENTS,
+  TOTAL_USERS,
+  USER_COUNT_BY_YEAR,
+  YEARLY,
+} from "../../common/constants/commonNames";
+import {
+  BASEURL,
+  countOfBookingStatusUrl,
+  countOfTotalEventUrl,
+  countOfTotalUserUrl,
+  graphOfUserUrl,
+  listOfLatestBookingUrl,
+  listOfLatestEventUrl,
+} from "../../API/api_helper";
 import { toast } from "react-toastify";
-import '../../STYLE/Dashboard.css'
+import "../../STYLE/Dashboard.css";
+import BaseTable from "../../common/components/BaseTable";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -53,7 +88,7 @@ const Dashboard = () => {
           },
           body: method === "POST" ? JSON.stringify(body) : null,
         });
-        if (!response.status===StatusCodes.OK) {
+        if (!response.status === StatusCodes.OK) {
           throw new Error(`${HTTP_ERROR_STATUS} ${response.status}`);
         }
         const data = await response.json();
@@ -63,53 +98,39 @@ const Dashboard = () => {
       }
     };
 
-    fetchData(`${BASEURL}${listOfLatestEventUrl}`,setLatestEvents
-    );
-    fetchData(`${BASEURL}${listOfLatestBookingUrl}`,setLatestBookings
-    );
+    fetchData(`${BASEURL}${listOfLatestEventUrl}`, setLatestEvents);
+    fetchData(`${BASEURL}${listOfLatestBookingUrl}`, setLatestBookings);
 
-    fetchData(`${BASEURL}${countOfBookingStatusUrl}`,
-      (data) => {
-        if (data.length > 0) {
-          const bookingData = data[0];
-          setTotalBookings(bookingData.countOfTotalBooking);
-          setCountOfPendingBooking(bookingData.countOfPendingBooking);
-          setCountOfApprovedBooking(bookingData.countOfApprovedBooking);
-          setCountOfCancelledBooking(bookingData.countOfCancelledBooking);
-        }
+    fetchData(`${BASEURL}${countOfBookingStatusUrl}`, (data) => {
+      if (data.length > 0) {
+        const bookingData = data[0];
+        setTotalBookings(bookingData.countOfTotalBooking);
+        setCountOfPendingBooking(bookingData.countOfPendingBooking);
+        setCountOfApprovedBooking(bookingData.countOfApprovedBooking);
+        setCountOfCancelledBooking(bookingData.countOfCancelledBooking);
       }
-    );
+    });
 
-    fetchData(`${BASEURL}${countOfTotalUserUrl}`,
-      (data) => {
-        if (data.length > 0) {
-          const userData = data[0];
-          setTotalUsers(userData.countOfTotalUser);
-          setTotalActiveUsers(userData.countOfTotalActiveUser);
-          setTotalDeActiveUsers(userData.countOfTotalDeActiveUser);
-        }
+    fetchData(`${BASEURL}${countOfTotalUserUrl}`, (data) => {
+      if (data.length > 0) {
+        const userData = data[0];
+        setTotalUsers(userData.countOfTotalUser);
+        setTotalActiveUsers(userData.countOfTotalActiveUser);
+        setTotalDeActiveUsers(userData.countOfTotalDeActiveUser);
       }
-    );
+    });
 
-    fetchData(
-     `${BASEURL}${countOfTotalEventUrl}`,
-      (data) => {
-        if (data.length > 0) {
-          setTotalEvents(data[0].countOfTotalEvent);
-        }
+    fetchData(`${BASEURL}${countOfTotalEventUrl}`, (data) => {
+      if (data.length > 0) {
+        setTotalEvents(data[0].countOfTotalEvent);
       }
-    );
+    });
 
-    fetchData(
-      `${BASEURL}${graphOfUserUrl}`,
-      setUserCountsByYear,
-      "POST",
-      {
-        type: "Yearly",
-      }
-    );
+    fetchData(`${BASEURL}${graphOfUserUrl}`, setUserCountsByYear, "POST", {
+      type: "Yearly",
+    });
   }, []);
-  
+
   useEffect(() => {
     const animateCount = (targetValue, setAnimatedValue) => {
       let count = 0;
@@ -118,7 +139,7 @@ const Dashboard = () => {
           count += Math.ceil(targetValue / 100);
           setAnimatedValue(Math.min(count, targetValue));
         } else {
-          clearInterval(interval); 
+          clearInterval(interval);
         }
       }, 20);
     };
@@ -152,14 +173,26 @@ const Dashboard = () => {
     ],
   };
 
+  const eventColumns = [
+    { id: "event_name", label: EVENT_NAME },
+    { id: "event_description", label: EVENT_DESCRIPTION },
+    {id: "created_at", label: EVENT_DATE},
+    { id: "auth_user.email", label: CREATED_BY_EMAIL }, 
+  ];
 
+  const bookingColumns = [
+    { id: "event_date", label: EVENT_DATE },
+    { id: "status", label: STATUS },
+    { id: "address.address_line1", label: ADDRESS_LINE_1 },
+    { id: "address.city.city_name", label:CITY },
+    { id: "auth_user.email", label:CREATED_BY_EMAIL },
+  ];
 
-
-return (
-    <div  className="top-div" >
+  return (
+    <div className="top-div">
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={3}>
-          <Card elevation={3} className="e0f7fa" >
+          <Card elevation={3} className="e0f7fa">
             <CardContent>
               <Typography variant="h6" className="font-weight-bold">
                 {TOTAL_BOOKING}
@@ -220,7 +253,7 @@ return (
           </Card>
         </Grid>
         <Grid item xs={12} sm={6} md={3}>
-          <Card elevation={3}  className="c8e6c9">
+          <Card elevation={3} className="c8e6c9">
             <CardContent>
               <Typography variant="h6" className="font-weight-bold">
                 {ACTIVE_USERS}
@@ -258,108 +291,33 @@ return (
         </Grid>
 
         <Grid item xs={12} md={6}>
-        <Card elevation={3} 
-            className="table-card m-1">
-          <Typography variant="h6">{LATEST_EVENTS}</Typography>
-          <div className="table-div">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{EVENT_NAME}</TableCell>
-                  <TableCell>{EVENT_DESCRIPTION}</TableCell>
-                  <TableCell>{DATE}</TableCell>
-                  <TableCell>{CREATED_BY_EMAIL}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {latestEvents.length > 0 ? (
-                  latestEvents.map((event) => (
-                    <TableRow key={event.id}>
-                      <TableCell>{event.event_name || DASH}</TableCell>
-                      <TableCell>{event.event_description || DASH}</TableCell>
-                      <TableCell>
-                        {new Date(event.created_at).toLocaleDateString() || DASH}
-                      </TableCell>
-                      <TableCell>{event.auth_user?.email || DASH}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4}>
-                      {NO_LATEST_EVENTS_AVAILABLE}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </Card>
-        </Grid>
-
-        <Grid item xs={12} md={6}>
-        <Card elevation={3}
-            className="table-card m-1">
-          <Typography variant="h6">{LATEST_BOOKINGS}</Typography>
-          <div className="table-div">
-        <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>{EVENT_DATE}</TableCell>
-                  <TableCell>{STATUS}</TableCell>
-                  <TableCell>{ADDRESS_LINE_1}</TableCell>
-                  <TableCell>{CITY}</TableCell>
-                  <TableCell>{CREATED_BY_EMAIL}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {latestBookings.length > 0 ? (
-                  latestBookings.map((booking) => (
-                    <TableRow key={booking.id}>
-                      <TableCell>
-                        {new Date(booking.event_date).toLocaleDateString() || DASH}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Chip
-                          label={booking.status || DASH}
-                          color={
-                            booking.status === "Approved"
-                              ? "success"
-                              : booking.status === "Pending"
-                              ? "warning"
-                              : booking.status === "Cancelled"
-                              ? "error"
-                              : "default"
-                          }
-                          size="small" 
-                        />
-                      </TableCell>
-
-                      <TableCell>
-                        {booking.address?.address_line1 || DASH}
-                      </TableCell>
-                      <TableCell>
-                        {booking.address?.city?.city_name || DASH}
-                      </TableCell>
-                      <TableCell>{booking.auth_user?.email || DASH}</TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={5}>
-                      {NO_LATEST_BOOKINGS_AVAILABLE}
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-        
-
-          </div>
+          <Card elevation={3} className="table-card m-1">
+            <Typography variant="h6">{LATEST_EVENTS}</Typography>
+            <div className="table-div">
+              <BaseTable
+                columns={eventColumns}
+                data={latestEvents} 
+                noDataMessage={NO_LATEST_EVENTS_AVAILABLE}
+              />
+            </div>
           </Card>
         </Grid>
 
-         <Grid item xs={12} className="pb-5"  >
-           <Card elevation={3} className="pie-card">
+        <Grid item xs={12} md={6}>
+          <Card elevation={3} className="table-card m-1">
+            <Typography variant="h6">{LATEST_BOOKINGS}</Typography>
+            <div className="table-div">
+              <BaseTable
+                columns={bookingColumns}
+                data={latestBookings} 
+                noDataMessage={NO_LATEST_BOOKINGS_AVAILABLE}
+              />
+            </div>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} className="pb-5">
+          <Card elevation={3} className="pie-card">
             <Typography variant="h6">{USER_COUNT_BY_YEAR}</Typography>
             <div className="pie-div">
               <Pie
@@ -375,9 +333,6 @@ return (
       </Grid>
     </div>
   );
-
-
-
 };
 
 export default Dashboard;
