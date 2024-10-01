@@ -71,6 +71,8 @@
     BASEURL,
     changePasswordUrl,
     editProfileUrl,
+    profileUrl,
+    viewProfileUrl
   } from "../../../../API/api_helper";
   import { StatusCodes } from "http-status-codes";
 
@@ -80,10 +82,13 @@
       name: EMPTY_STRING,
       email: EMPTY_STRING,
       phone_number: EMPTY_STRING,
+      profile_image: EMPTY_STRING,
     });
     const [activeTab, setActiveTab] = useState(PROFILE_VALUE);
     const [isDirty, setIsDirty] = useState(false);
     const [searchParams] = useSearchParams();
+    const navigate = useNavigate();
+
 
     const tab = searchParams.get(TAB_VALUE);
 
@@ -206,6 +211,32 @@
     };
 
 
+        const handleProfileClick = async () => {
+      try {
+        const response = await fetch(`${BASEURL}${viewProfileUrl}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: getItem(), 
+            },
+          }
+          
+        );
+        
+        if (response.status === StatusCodes.OK) {
+          const profileData = await response.json();
+          setItem('profileData', JSON.stringify(profileData.data))
+          navigate("/pages-profile-settings?tab=profile");
+        } else {
+          toast.error(response.message);
+        }
+      } catch (error) {
+        toast.error(error.message)
+      }
+    };
+
+
 
     const handleFileChange = async (event) => {
       const file = event.target.files[0];
@@ -223,14 +254,17 @@
           });
 
           const result = await response.json();
-          if (result.statusCode === StatusCodes.OK) {
+          if (result.statusCode === StatusCodes.ACCEPTED) {
+            handleProfileClick()
             toast.success(result.message);
             const updatedProfileData = {
               ...profileData,
-              profile_image: URL.createObjectURL(file),
+              profile_image: `${profileData.profile_image}`
             };
             setProfileData(updatedProfileData);
             setItem(PROFILE_DATA, JSON.stringify(updatedProfileData));
+            
+
           } else {
             toast.error(result.message);
           }
@@ -240,16 +274,23 @@
       }
     };
 
+
+
+
+
+
     useEffect(() => {
       const savedProfile = getItemProfileData();
       if (savedProfile) {
         try {
           const profile = JSON.parse(savedProfile);
+          console.log(profile.profile_image)
+
           setProfileData({
             name: profile.name || EMPTY_STRING,
             email: profile.email || EMPTY_STRING,
             phone_number: profile.phone_number || EMPTY_STRING,
-            profile_image: profile.profile_image || avatar1,
+            profile_image:profile.profile_image|| avatar1,
           });
         } catch (error) {
           toast.error(error.message);
@@ -267,6 +308,8 @@
       setActiveTab(newValue);
     };
 
+    console.log(`${profileUrl}${profileData.profile_image}`, "img")
+
     return (
       <Container maxWidth="md" className="container">
         <Card className="card-margins">
@@ -280,7 +323,7 @@
             >
               <Box position="relative">
                 <img
-                  src={profileData.profile_image || avatar1}
+                  src={`${profileUrl}${profileData.profile_image}`}
                   alt="User Avatar"
                   className="avatar"
                 />
