@@ -4,6 +4,9 @@ const loginURL = "api/login"
 const verifyEmailUrl = "api/verifyEmail"
 const updatePasswordUrl = "api/updatePassword"
 const changePasswordUrl = "api/changePassword"
+const viewProfileUrl = "api/viewProfile"
+const editProfileUrl = "api/editProfile"
+const profileUrl = "https://refactor-event-management.onrender.com/uploads/"
 
 export{
     BASEURL,
@@ -11,4 +14,7 @@ export{
     verifyEmailUrl,
     updatePasswordUrl,
     changePasswordUrl,
+    viewProfileUrl,
+    editProfileUrl,
+    profileUrl
 }
