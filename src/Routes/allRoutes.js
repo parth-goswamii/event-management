@@ -7,6 +7,8 @@ import ForgetPasswordPage from "../pages/Authentication/ForgetPassword";
 import Logout from "../pages/Authentication/Logout";
 import PasswordUpdatePage from "../pages/Authentication/PasswordUpdatePage";
 import ChangePasswordPage from "../pages/Authentication/ChangePasswordPage";
+import Dashboard from "../pages/DashboardPage/Dashboard";
+
 import APIKey from "../pages/APIKey";
 import { components } from "react-select";
 
@@ -14,6 +16,7 @@ const authProtectedRoutes = [
   { path: "/apps-api-key", component: <APIKey /> },
   { path: "/pages-profile", component: <SimplePage /> },
   { path: "/pages-profile-settings", component: <Settings /> },
+  {path: "/dashboard", component : <Dashboard/>},
   {
     path: "/",
     exact: true,
