@@ -36,3 +36,7 @@
 .hidden-input {
     display: none;
   }
+
+.card-margins {
+   margin-bottom: 10px;
+}

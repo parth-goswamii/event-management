@@ -269,7 +269,7 @@
 
     return (
       <Container maxWidth="md" className="container">
-        <Card sx={{ marginBottom: 1 }}>
+        <Card className="card-margins">
           <CardContent>
             <Box
               display="flex"
