@@ -60,6 +60,8 @@ import {
   UPLOAD_EVENT_IMAGE,
 } from "../../common/constants/commonNames";
 
+import "../../STYLE/Event.css"
+
 const EventPage = () => {
   const [events, setEvents] = useState([]);
   const [open, setOpen] = useState(false);
@@ -132,9 +134,9 @@ const EventPage = () => {
         }),
       });
 
-      if (response.status !== StatusCodes.CREATED) {
+      if (response.status === StatusCodes.CREATED) {
         const errorData = await response.json();
-        toast.error(errorData.message);
+        toast.success(errorData.message);
         return;
       }
 
@@ -314,7 +316,7 @@ const EventPage = () => {
           <img
             src={`${profileUrl}${images[0].image}`}
             alt={row.event_name}
-            style={{ width: "80px", height: "50px", objectFit: "cover" }}
+            className="col-img"
           />
         ) : (
           <span>{NO_IMAGE}</span>
@@ -328,13 +330,13 @@ const EventPage = () => {
         <>
           <Button
             onClick={() => handleEditOpen(row)}
-            style={{ color: "green" }}
+            className="edit-btn"
           >
             <EditIcon />
           </Button>
           <Button
             onClick={() => handleDeleteOpen(row.id)}
-            style={{ color: "red" }}
+            className="dlt-btn"
           >
             <DeleteIcon />
           </Button>
@@ -344,21 +346,15 @@ const EventPage = () => {
   ];
 
   return (
-    <div style={{ padding: "20px", paddingTop: "80px" }}>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <div className="top-div">
+      <div className="button-div">
         <h2>{EVENT}</h2>
         <div>
           <Button
             variant="outlined"
             color="primary"
             onClick={handleImageUploadClick}
-            style={{ marginRight: "10px" }}
+            className="add-eve-button"
           >
             {ADD_EVENT_IMAGE}
           </Button>
@@ -368,7 +364,7 @@ const EventPage = () => {
         </div>
       </div>
 
-      <TableContainer component={Paper} style={{ marginTop: "20px", maxHeight: "500px", overflowY: "auto" }}>
+      <TableContainer component={Paper} className="table-style" >
         <Table>
           <TableHead>
             <TableRow>
@@ -447,7 +443,7 @@ const EventPage = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            style={{ display: "block", marginTop: "20px" }}
+            className="imgch-ip"
           />
         </DialogContent>
         <DialogActions>
@@ -514,7 +510,3 @@ const EventPage = () => {
 };
 
 export default EventPage;
-
-
-
-
