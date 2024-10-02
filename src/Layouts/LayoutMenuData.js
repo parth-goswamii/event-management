@@ -67,7 +67,7 @@ const Navdata = () => {
       id: "event",
       label: "Event",
       icon: "mdi mdi-calendar",
-      link: "/#",
+      link: "/event",
       stateVariables: isEvent,
       click: function (e) {
         e.preventDefault();

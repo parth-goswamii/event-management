@@ -1,0 +1,42 @@
+.top-div{
+    padding: 20px;
+    padding-top: 80px;
+}
+
+
+.button-div{
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+}
+
+.add-eve-button{
+    margin-right: 10px !important;
+}
+
+.col-img{
+    width: 80px;
+    height: 50px;
+    object-fit: cover;
+
+}
+
+.edit-btn{
+    color: green !important;
+}
+
+.dlt-btn{
+    color: red !important;
+}
+
+.table-style{
+    margin-top: 20px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.imgch-ip{
+    /* style={{ display: "block", marginTop: "20px" } */
+    display: block;
+    margin-top: 20px !important;
+}
