@@ -13,7 +13,6 @@ import moment from 'moment/moment';
 
 const BaseTable = ({ columns, data, noDataMessage = 'No data available', isLoading = false }) => {
     const getNestedValue = (row, key) => {
-        console.log(row, key, "obj")
         
         const value = key.split('.').reduce((obj, keyPart) => {
             if(key === 'created_at' || key === "event_date")

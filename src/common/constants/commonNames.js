@@ -121,3 +121,38 @@ export const CITY="City"
 export const NO_LATEST_BOOKINGS_AVAILABLE="No Latest Bookings Available"
 export const USER_COUNT_BY_YEAR="User Count by Year"
 export const DASH = "-"
+
+export const PLEASE_SELECT_AN_IMAGE_AND_EVENT_TO_UPLOAD_IMAGE ="Please select an image and an event to upload the image for."
+
+export const NO_EVENT_ID_TO_DELETE ="No event ID to delete."
+
+export const EVENT = "Event"
+export const ADD_EVENT_IMAGE ="ADD EVENT IMAGE"
+export const ADD_EVENT ="ADD EVENT"
+
+export const EVENT_IMAGE="Event Image"
+export const ACTIONS = "Actions"
+
+export const NA="N/A"
+
+export const NO_IMAGE="No Image"
+
+export const CANCEL = "Cancel"
+
+export const ADD= "Add"
+
+export const UPLOAD_EVENT_IMAGE="Upload Event Image"
+
+export const SELECT_EVENT ="Select Event"
+
+export const UPLOAD="Upload"
+
+export const EDIT_EVENT="Edit Event"
+
+export const UPDATE = "Update"
+
+export const CONFIRM_DELETE="Confirm Delete"
+
+export const ARE_YOU_SURE_YOU_WANT_TO_DELETE_EVENT="Are you sure you want to delete this event?"
+
+export const DELETE = "Delete"
