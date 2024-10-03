@@ -13,6 +13,7 @@ import EventPage from "../pages/EventPage/EventPage";
 import APIKey from "../pages/APIKey";
 import { components } from "react-select";
 import ServicePage from "../pages/ServicePage/ServicePage";
+import ReportPage from "../pages/ReportsPage/ReportsPage";
 
 
 const authProtectedRoutes = [
@@ -22,6 +23,8 @@ const authProtectedRoutes = [
   {path: "/dashboard", component : <Dashboard/>},
   {path:"/event",component : <EventPage/>},
   {path:"/service",component : <ServicePage/>},
+  {path:"/report",component : <ReportPage/>},
+
 
 
   {
