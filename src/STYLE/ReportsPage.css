@@ -1,0 +1,43 @@
+.top-div {
+    margin: 20px ;
+  }
+  
+.table-container{
+  max-height: 400px !important;
+  overflow: auto;
+}
+  
+.main-card{
+  padding: 20px !important;
+  margin-bottom: 20px !important;
+}
+
+.grid-card{
+  align-items: center !important;
+  justify-content: space-between !important;;
+}
+
+.align-cent{
+  align-items: center;
+}
+
+.startdt{
+ margin-right: 8px !important;
+}
+
+.dateip{
+  padding: 8px;
+  border-radius: 4px ;
+  border: 1px solid #ccc;
+}
+.repoty{
+  margin-right: 8px !important;
+}
+
+.drpdwn{
+  padding: 8px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ccc !important;
+  width: 165px !important;
+  height: 35px !important;
+}
