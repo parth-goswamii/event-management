@@ -314,7 +314,11 @@ const EventPage = () => {
         const images = row.event_manage_images || [];
         return images.length > 0 ? (
           <img
-            src={`${profileUrl}${images[0].image}`}
+          onError={({ currentTarget }) => {
+            currentTarget.onerror = null; // prevents looping
+            currentTarget.src="https://lightwidget.com/wp-content/uploads/localhost-file-not-found.jpg";
+          }}
+            src={`${profileUrl}${images[images.length-1].image}`}
             alt={row.event_name}
             className="col-img"
           />

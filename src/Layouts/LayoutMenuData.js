@@ -80,7 +80,7 @@ const Navdata = () => {
       id: "service",
       label: "Service",
       icon: "mdi mdi-wrench-cog-outline",
-      link: "/#",
+      link: "/service",
       stateVariables: isService,
       click: function (e) {
         e.preventDefault();
@@ -93,7 +93,7 @@ const Navdata = () => {
       id: "report",
       label: "Reports",
       icon: "mdi mdi-file-cad",
-      link: "/#",
+      link: "/report",
       stateVariables: isReports,
       click: function (e) {
         e.preventDefault();

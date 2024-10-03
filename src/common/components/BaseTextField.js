@@ -12,6 +12,7 @@ const BaseTextField = ({
   onBlur,
   error,
   helperText,
+  className,
   showPasswordToggle,
 }) => {
 
@@ -32,6 +33,7 @@ const BaseTextField = ({
         placeholder={placeholder}
         variant="outlined"
         onChange={onChange}
+        className={className}
         onBlur={onBlur}
         value={value}
         error={error}
