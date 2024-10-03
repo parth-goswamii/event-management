@@ -9,6 +9,7 @@ const BaseButton = ({
   type = 'button', 
   disabled = false, 
   variant = 'contained', 
+  className,
   color = 'primary', 
   fullWidth = true 
 }) => {
@@ -19,6 +20,7 @@ const BaseButton = ({
       disabled={disabled || loading}
       variant={variant}
       color={color}
+      className={className}
       fullWidth={fullWidth}
       sx={{ mt: 2 }}
     >

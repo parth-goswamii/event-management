@@ -18,6 +18,14 @@ const addEventImageUrl = "api/eventMange/addEventImage"
 const editEventUrl="api/eventMange/editEvent/"
 const deleteEventUrl = "api/eventMange/deleteEvent/"
 
+const addServiceUrl="api/serviceMange/addService"
+const updateServiceUrl ="api/serviceMange/updateService/"
+const deleteServiceUrl="api/serviceMange/deleteService/"
+const listOfServiceUrl ="api/serviceMange/listOfService"
+
+const bookingReportUrl = "api/report/bookingReport"
+const eventReportUrl ="api/report/eventReport"
+
 export{
     BASEURL,
     loginURL,
@@ -37,4 +45,11 @@ export{
     addEventImageUrl,
     editEventUrl,
     deleteEventUrl,
+    deleteServiceUrl,
+    addServiceUrl,
+    updateServiceUrl,
+    listOfServiceUrl,
+    bookingReportUrl,
+    eventReportUrl,
+
 }

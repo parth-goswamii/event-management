@@ -12,6 +12,8 @@ import EventPage from "../pages/EventPage/EventPage";
 
 import APIKey from "../pages/APIKey";
 import { components } from "react-select";
+import ServicePage from "../pages/ServicePage/ServicePage";
+
 
 const authProtectedRoutes = [
   { path: "/apps-api-key", component: <APIKey /> },
@@ -19,6 +21,9 @@ const authProtectedRoutes = [
   { path: "/pages-profile-settings", component: <Settings /> },
   {path: "/dashboard", component : <Dashboard/>},
   {path:"/event",component : <EventPage/>},
+  {path:"/service",component : <ServicePage/>},
+
+
   {
     path: "/",
     exact: true,

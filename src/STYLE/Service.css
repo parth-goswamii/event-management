@@ -1,0 +1,56 @@
+.top-div{
+    padding: 20px;
+    padding-top:80px;
+}
+
+
+.table-style{
+    margin-top: 20px;
+    max-height: 550px;
+    overflow-y: auto;
+}
+
+.button-div{
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+}
+
+
+.top-add-serv{
+    width: 150px !important;
+}
+
+
+.event-dropdown{
+    margin-top: 10px !important;
+}
+
+
+.add-serv-ip{
+    margin-bottom: 10px !important;
+}
+
+.edit-btn{
+    width: 1px !important;
+    margin-right: 5px !important;
+    color: green !important;
+    background-color: transparent !important;
+    background: none;
+    box-shadow: none !important;
+}
+
+.delete-btn{
+    width: 1px !important;
+    margin-right: 5px !important;
+    color: red !important;
+    background-color: transparent !important;
+    background: none;
+    box-shadow: none !important;
+
+}
+
+
+.table-row{
+    height: 100px !important;
+}
